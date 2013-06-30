@@ -45,6 +45,8 @@
 		this.tooltip = this.picker.find('.tooltip');
 		this.tooltipInner = this.tooltip.find('div.tooltip-inner');
 
+		this.handleValue = this.element.data('slider-handle-value') || options.handleValue;
+
 		this.orientation = this.element.data('slider-orientation')||options.orientation;
 		switch(this.orientation) {
 			case 'vertical':
@@ -57,7 +59,8 @@
 			default:
 				this.picker
 					.addClass('slider-horizontal')
-					.css('width', this.element.outerWidth());
+					.css('width', this.element.outerWidth() * 0.8)
+				    .css('margin-left', this.element.outerWidth() * 0.1);
 				this.orientation = 'horizontal';
 				this.stylePos = 'left';
 				this.mousePos = 'pageX';
@@ -99,11 +102,32 @@
 				break
 		}
 
+
 		if (this.range) {
 			this.value[0] = Math.max(this.min, Math.min(this.max, this.value[0]));
 			this.value[1] = Math.max(this.min, Math.min(this.max, this.value[1]));
+
+			if (this.handleValue === 'show') {
+			    this.handle1.html(parseInt(this.value[0]).toString());
+			} else {
+			    this.handle1.html('&nbsp;&nbsp;&nbsp;');
+			}
+
+			if (this.handleValue === 'show') {
+			    this.handle2.html(parseInt(this.value[1]).toString());
+			} else {
+			    this.handle2.html('&nbsp;&nbsp;&nbsp;');
+			}
+
 		} else {
 			this.value = [ Math.max(this.min, Math.min(this.max, this.value))];
+			
+            if (this.handleValue === 'show') {
+			    this.handle1.html(parseInt(this.value).toString());
+			} else {
+			    this.handle1.html('&nbsp;&nbsp;&nbsp;');
+			}
+
 			this.handle2.addClass('hide');
 			if (this.selection == 'after') {
 				this.value[1] = this.max;
@@ -111,6 +135,7 @@
 				this.value[1] = this.min;
 			}
 		}
+
 		this.diff = this.max - this.min;
 		this.percentage = [
 			(this.value[0]-this.min)*100/this.diff,
@@ -259,6 +284,18 @@
 			this.percentage[this.dragged] = percentage;
 			this.layout();
 			var val = this.calculateValue();
+
+			if (this.range) {
+			    if (this.handleValue === 'show') {
+			        this.handle1.html('<strong>' + val[0] + '</strong>');
+			        this.handle2.html('<strong>' + val[1] + '</strong>');
+			    }
+			} else {
+			    if (this.handleValue === 'show') {
+			        this.handle1.html('<strong>' + val + '</strong>');
+			    }
+			}
+            
 			this.element
 				.trigger({
 					type: 'slide',
@@ -376,11 +413,12 @@
 		orientation: 'horizontal',
 		value: 5,
 		selection: 'before',
-		tooltip: 'show',
+		tooltip: 'hide',
 		handle: 'round',
 		formater: function(value) {
 			return value;
-		}
+		},
+        handleValue: 'hide'
 	};
 
 	$.fn.slider.Constructor = Slider;
