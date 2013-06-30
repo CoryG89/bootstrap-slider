@@ -6,6 +6,8 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  */
+@import 'mixins.less';
+@import 'variables.less';
 
 .slider {
 	display: inline-block;
@@ -88,6 +90,9 @@
 	.border-radius(@baseBorderRadius);
 }
 .slider-handle {
+    text-align: center;
+    font-weight: bold;
+    color: white;
 	position: absolute;
 	width: @baseLineHeight;
 	height: @baseLineHeight;
