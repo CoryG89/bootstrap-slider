@@ -69,10 +69,18 @@
 				break;
 		}
 
-		this.min = this.element.data('slider-min')||options.min;
-		this.max = this.element.data('slider-max')||options.max;
-		this.step = this.element.data('slider-step')||options.step;
-		this.value = this.element.data('slider-value')||options.value;
+		this.min = this.element.data('slider-min');
+		if (typeof this.min === 'undefined') this.min = options.min;
+
+		this.max = this.element.data('slider-max');
+		if (typeof this.max === 'undefined') this.max = options.max;
+
+		this.step = this.element.data('slider-step');
+		if (typeof this.step === 'undefined') this.step = options.step;
+
+		this.value = this.element.data('slider-value');
+		if (typeof this.value === 'undefined') this.value = options.value;
+		
 		if (this.value[1]) {
 			this.range = true;
 		}
