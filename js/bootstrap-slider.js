@@ -57,10 +57,9 @@
 				this.tooltip.addClass('right')[0].style.left = '100%';
 				break;
 			default:
-				this.picker
+			    this.picker
 					.addClass('slider-horizontal')
-					.css('width', this.element.outerWidth() * 0.8)
-				    .css('margin-left', this.element.outerWidth() * 0.1);
+					.css('width', this.element.outerWidth());
 				this.orientation = 'horizontal';
 				this.stylePos = 'left';
 				this.mousePos = 'pageX';
@@ -80,7 +79,7 @@
 
 		this.value = this.element.data('slider-value');
 		if (typeof this.value === 'undefined') this.value = options.value;
-		
+
 		if (this.value[1]) {
 			this.range = true;
 		}
@@ -116,14 +115,19 @@
 			this.value[1] = Math.max(this.min, Math.min(this.max, this.value[1]));
 
 			if (this.handleValue === 'show') {
-			    this.handle1.html(parseInt(this.value[0]).toString());
+
+				var handle1Val = this.value[0];
+				var handle2Val = this.value[1];
+
+				if (this.step < 1) {
+					handle1Val = handle1Val.toFixed(this.step.toString().length - 2);
+					handle2Val = handle2Val.toFixed(this.step.toString().length - 2);
+				}
+
+			    this.handle1.html(handle1Val);
+			    this.handle2.html(handle1Val);
 			} else {
 			    this.handle1.html('&nbsp;&nbsp;&nbsp;');
-			}
-
-			if (this.handleValue === 'show') {
-			    this.handle2.html(parseInt(this.value[1]).toString());
-			} else {
 			    this.handle2.html('&nbsp;&nbsp;&nbsp;');
 			}
 
@@ -131,7 +135,14 @@
 			this.value = [ Math.max(this.min, Math.min(this.max, this.value))];
 			
             if (this.handleValue === 'show') {
-			    this.handle1.html(parseInt(this.value).toString());
+
+            	var handleVal = this.value[0];
+
+            	if (this.step < 1) {
+            		handleVal = handleVal.toFixed(this.step.toString().length - 2);
+            	}
+
+			    this.handle1.html(handleVal);
 			} else {
 			    this.handle1.html('&nbsp;&nbsp;&nbsp;');
 			}
@@ -295,12 +306,26 @@
 
 			if (this.range) {
 			    if (this.handleValue === 'show') {
-			        this.handle1.html('<strong>' + val[0] + '</strong>');
-			        this.handle2.html('<strong>' + val[1] + '</strong>');
+			    	var handle1Val = val[0];
+			    	var handle2Val = val[1];
+
+					if (this.step < 1) {
+			    		handle1Val = handle1Val.toFixed(this.step.toString().length - 2);
+			    		handle1Val = handle1Val.toFixed(this.step.toString().length - 2);
+			    	}
+
+			        this.handle1.html('<strong>' + handle1Val + '</strong>');
+			        this.handle2.html('<strong>' + handle2Val + '</strong>');
 			    }
 			} else {
 			    if (this.handleValue === 'show') {
-			        this.handle1.html('<strong>' + val + '</strong>');
+			    	var handleVal = val;
+
+			    	if (this.step < 1) {
+			    		handleVal = val.toFixed(this.step.toString().length - 2);
+			    	}
+
+			        this.handle1.html('<strong>' + handleVal + '</strong>');
 			    }
 			}
             
